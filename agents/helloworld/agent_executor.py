@@ -5,15 +5,20 @@ import httpx
 import re
 
 class HelloWorldAgentExecutor(AgentExecutor):
+    """Agent executor providing several demonstration skills."""
+
     async def hello_world(self, context: RequestContext, event_queue: EventQueue) -> None:
+        """Send a simple ``Hello World`` message."""
         event_queue.enqueue_event(new_agent_text_message("Hello World"))
 
     async def super_hello_world(
         self, context: RequestContext, event_queue: EventQueue
     ) -> None:
+        """Send an enthusiastic ``Hello World`` greeting."""
         event_queue.enqueue_event(new_agent_text_message("Hello World"))
 
     async def convert_currency(self, context: RequestContext, event_queue: EventQueue) -> None:
+        """Parse the user's request and simulate a currency conversion."""
         # Extrair o texto da invocação
         input_text = context.input.content.decode("utf-8")
 
@@ -58,6 +63,7 @@ class HelloWorldAgentExecutor(AgentExecutor):
             ))
 
     async def find_and_greet_agent(self, context: RequestContext, event_queue: EventQueue) -> None:
+        """Locate other agents using MCP and greet them."""
         from .mcp import client as mcp_client
         from a2a.client import A2AClient
 
@@ -75,11 +81,11 @@ class HelloWorldAgentExecutor(AgentExecutor):
                 event_queue.enqueue_event(new_agent_text_message(f"Agent {agent.name} responded: {response}"))
 
     async def execute(self, context: RequestContext, event_queue: EventQueue) -> None:
-        # Implementação básica para o método execute
+        """Placeholder implementation for running a skill task."""
         pass
 
     async def cancel(self, context: RequestContext, event_queue: EventQueue) -> None:
-        # Implementação básica para o método cancel
+        """Placeholder implementation for cancelling a running task."""
         pass
 
 
