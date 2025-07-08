@@ -1,0 +1,35 @@
+{
+    "name": "Hello World Agent - Extended Edition",
+    "description": "The full-featured hello world agent for authenticated users.",
+    "url": "http://localhost:9999/",
+    "version": "1.0.1",
+    "defaultInputModes": ["text"],
+    "defaultOutputModes": ["text"],
+    "capabilities": {
+        "streaming": true
+    },
+    "skills": [
+        {
+            "id": "hello_world",
+            "name": "Returns hello world",
+            "description": "just returns hello world",
+            "tags": ["hello world"],
+            "examples": ["hi", "hello world"]
+        },
+        {
+            "id": "super_hello_world",
+            "name": "Returns a SUPER Hello World",
+            "description": "A more enthusiastic greeting, only for authenticated users.",
+            "tags": ["hello world", "super", "extended"],
+            "examples": ["super hi", "give me a super hello"]
+        },
+        {
+            "id": "convert_currency",
+            "name": "Currency Exchange Rates Tool",
+            "description": "Helps with exchange values between various currencies",
+            "tags": ["currency conversion", "currency exchange"],
+            "examples": ["convert 10 USD to BRL", "how much is 5 BRL in USD"]
+        }
+    ],
+    "supportsAuthenticatedExtendedCard": true
+}
