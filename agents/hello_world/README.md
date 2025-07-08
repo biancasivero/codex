@@ -1,13 +1,55 @@
-# Remote agent built by LangGraph
+# Hello World Example
+
+Hello World example agent that only returns Message events
 
 ## Getting started
 
-1. Create a .env file using the `.env.example` file as a template.
+1. Start the server
 
-2. Start the server
+   ```bash
+   uv run .
+   ```
+
+2. Run the pedido client
+
+   ```bash
+   uv run pedido_client.py
+   ```
+
+## Build Container Image
+
+Agent can also be built using a container file.
+
+1. Navigate to the directory `samples/python/agents/helloworld` directory:
+
+  ```bash
+  cd samples/python/agents/helloworld
+  ```
+
+2. Build the container file
+
     ```bash
-    uv run .
+    podman build . -t helloworld-a2a-server
     ```
+
+> [!Tip]  
+> Podman is a drop-in replacement for `docker` which can also be used in these commands.
+
+3. Run you container
+
+    ```bash
+    podman run -p 9999:9999 helloworld-a2a-server
+    ```
+
+## Validate
+
+To validate in a separate terminal, run the A2A client:
+
+```bash
+cd samples/python/hosts/cli
+uv run . --agent http://localhost:9999
+```
+
 
 ## Disclaimer
 Important: The sample code provided is for demonstration purposes and illustrates the mechanics of the Agent-to-Agent (A2A) protocol. When building production applications, it is critical to treat any agent operating outside of your direct control as a potentially untrusted entity.
