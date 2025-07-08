@@ -69,14 +69,17 @@ server = A2AStarletteApplication(
 app = server.build()
 
 if __name__ == "__main__":
-    import asyncio
+    import multiprocessing
     from .mcp import server as mcp_server
 
-    async def main():
-        mcp_server_task = asyncio.create_task(mcp_server.main())
-        uvicorn.run(app, host="0.0.0.0", port=9999)
-        await mcp_server_task
+    def run_mcp_server():
+        mcp_server.main()
 
-    asyncio.run(main())
+    mcp_process = multiprocessing.Process(target=run_mcp_server)
+    mcp_process.start()
+
+    uvicorn.run(app, host="0.0.0.0", port=9999)
+
+    mcp_process.join()
 
 
