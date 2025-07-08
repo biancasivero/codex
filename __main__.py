@@ -1,3 +1,5 @@
+"""Entry point that launches the demo agent server using Uvicorn."""
+
 import uvicorn
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
