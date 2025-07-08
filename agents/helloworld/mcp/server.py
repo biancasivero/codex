@@ -1,3 +1,6 @@
+from a2a_mcp.mcp.server import serve
+
+
 def main():
     import argparse
 
