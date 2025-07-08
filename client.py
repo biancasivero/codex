@@ -1,6 +1,8 @@
 import logging
 import httpx
+import asyncio
 from uuid import uuid4
+from typing import Any
 
 from a2a.client import A2ACardResolver, A2AClient
 from a2a.types import (
@@ -18,6 +20,8 @@ async def main() -> None:
     # Configure logging to show INFO level messages
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)  # Get a logger instance
+
+    await asyncio.sleep(5)
 
     base_url = 'http://localhost:9999'
     async with httpx.AsyncClient() as httpx_client:
@@ -96,27 +100,39 @@ async def main() -> None:
         )
         logger.info('A2AClient initialized.')
 
-        send_message_payload: dict[str, Any] = {
+        # Exemplo de chamada para a nova habilidade de conversão de moedas
+        currency_conversion_payload: dict[str, Any] = {
             'message': {
                 'role': 'user',
                 'parts': [
-                    {'kind': 'text', 'text': 'how much is 10 USD in INR?'}
+                    {'kind': 'text', 'text': 'convert 25 USD to BRL'}
                 ],
                 'messageId': uuid4().hex,
             },
         }
-        request = SendMessageRequest(
-            id=str(uuid4()), params=MessageSendParams(**send_message_payload)
+        currency_request = SendMessageRequest(
+            id=str(uuid4()), params=MessageSendParams(**currency_conversion_payload)
         )
-        response = await client.send_message(request)
-        print(response.model_dump(mode='json', exclude_none=True))
+        currency_response = await client.send_message(currency_request)
+        print("\n--- Resposta da Conversão de Moedas ---")
+        print(currency_response.model_dump(mode='json', exclude_none=True))
 
-        streaming_request = SendStreamingMessageRequest(
-            id=str(uuid4()), params=MessageSendParams(**send_message_payload)
+        # Exemplo de chamada para a habilidade super_hello_world
+        super_hello_world_payload: dict[str, Any] = {
+            'message': {
+                'role': 'user',
+                'parts': [
+                    {'kind': 'text', 'text': 'give me a super hello'}
+                ],
+                'messageId': uuid4().hex,
+            },
+        }
+        super_hello_request = SendMessageRequest(
+            id=str(uuid4()), params=MessageSendParams(**super_hello_world_payload)
         )
-        stream_response = client.send_message_streaming(streaming_request)
-        async for chunk in stream_response:
-            print(chunk.model_dump(mode='json', exclude_none=True))
+        super_hello_response = await client.send_message(super_hello_request)
+        print("\n--- Resposta do Super Hello World ---")
+        print(super_hello_response.model_dump(mode='json', exclude_none=True))
 
 
 if __name__ == '__main__':

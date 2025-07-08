@@ -3,4 +3,11 @@ flask
 requests
 uvicorn
 
+<<<<<<< HEAD
 httpx
+=======
+
+httpx
+
+
+>>>>>>> 245401f (novidade)
