@@ -11,9 +11,9 @@ This project demonstrates a minimal Agent-to-Agent (A2A) application. It exposes
    python3 -m venv .venv
    source .venv/bin/activate
    ```
-2. **Install dependencies** listed in `requirements.txt`.
+2. **Install dependencies** listed in `requirements.txt` and the `httpx` HTTP client.
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements.txt httpx
    ```
 
 ## Adding Dependencies
@@ -38,9 +38,12 @@ Replace `<package>` and `<profile>` with your desired package and Smithery profi
 
 The agent server is defined in `__main__.py`. Edit this file if you want to change the skills, agent card or server configuration.
 
-Run the agent with:
+Start the server from the repository's parent directory with:
 ```bash
-python __main__.py
+python -m codex
 ```
+
+The `agent_executor.py` module contains the `HelloWorldAgentExecutor` class
+that implements the logic for handling the agent's skills.
 
 The client script (`client.py`) shows how to connect to the agent and invoke its skills.
