@@ -57,6 +57,23 @@ class HelloWorldAgentExecutor(AgentExecutor):
                 f"Ocorreu um erro inesperado durante a conversão: {e}"
             ))
 
+    async def find_and_greet_agent(self, context: RequestContext, event_queue: EventQueue) -> None:
+        from .mcp import client as mcp_client
+        from a2a.client import A2AClient
+
+        # Find agents using the MCP client
+        agents = await mcp_client.find_agents("hello world")
+        if not agents:
+            event_queue.enqueue_event(new_agent_text_message("No agents found."))
+            return
+
+        # Greet each agent
+        for agent in agents:
+            client = A2AClient(agent_card=agent)
+            async with client.connect() as connection:
+                response = await connection.execute_skill("hello_world")
+                event_queue.enqueue_event(new_agent_text_message(f"Agent {agent.name} responded: {response}"))
+
     async def execute(self, context: RequestContext, event_queue: EventQueue) -> None:
         # Implementação básica para o método execute
         pass
