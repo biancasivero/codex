@@ -7,7 +7,7 @@ from a2a.types import (
     AgentCard,
     AgentSkill,
 )
-from .agent_executor import (
+from codex.agent_executor import (
     HelloWorldAgentExecutor,  # type: ignore[import-untyped]
 )
 if __name__ == '__main__':
