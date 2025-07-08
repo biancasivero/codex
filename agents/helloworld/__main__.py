@@ -27,6 +27,13 @@ extended_skill = AgentSkill(
     tags=["hello world", "super", "extended"],
     examples=["super hi", "give me a super hello"],
 )
+convert_currency_skill = AgentSkill(
+    id="convert_currency",
+    name="Currency Exchange Rates Tool",
+    description="Helps with exchange values between various currencies",
+    tags=["currency conversion", "currency exchange"],
+    examples=["convert 10 USD to BRL", "how much is 5 BRL in USD"],
+)
 # --8<-- [start:AgentCard]
 # This will be the public-facing agent card
 public_agent_card = AgentCard(
@@ -53,6 +60,7 @@ specific_extended_agent_card = public_agent_card.model_copy(
         "skills": [
             skill,
             extended_skill,
+            convert_currency_skill,
         ],
     }
 )
