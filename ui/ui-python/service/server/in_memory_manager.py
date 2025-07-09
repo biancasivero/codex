@@ -16,9 +16,19 @@ from a2a.types import (
 )
 from utils.agent_card import get_agent_card
 
-from service.server import test_image
+# from service.server import test_image
 from service.server.application_manager import ApplicationManager
 from service.types import Conversation, Event
+
+
+def task_still_open(task: Task | None) -> bool:
+    if not task:
+        return False
+    return task.status.state in [
+        TaskState.SUBMITTED,
+        TaskState.WORKING,
+        TaskState.INPUT_REQUIRED,
+    ]
 
 
 class InMemoryFakeAgentManager(ApplicationManager):
@@ -54,30 +64,34 @@ class InMemoryFakeAgentManager(ApplicationManager):
         return c
 
     def sanitize_message(self, message: Message) -> Message:
-        if message.contextId:
-            conversation = self.get_conversation(message.contextId)
-        if not conversation:
-            return message
-        # Check if the last event in the conversation was tied to a task.
-        if conversation.messages:
-            if conversation.messages[-1].taskId and task_still_open(
-                next(
-                    filter(
-                        lambda x: x.id == conversation.messages[-1].taskId,
-                        self._tasks,
-                    ),
-                    None,
-                )
-            ):
-                message.taskId = conversation.messages[-1].taskId
+        context_id = message.metadata.get('contextId') if message.metadata else None
+        if context_id:
+            conversation = self.get_conversation(context_id)
+            if not conversation:
+                return message
+            # Check if the last event in the conversation was tied to a task.
+            if conversation.messages:
+                last_message_task_id = conversation.messages[-1].metadata.get('taskId') if conversation.messages[-1].metadata else None
+                if last_message_task_id and task_still_open(
+                    next(
+                        filter(
+                            lambda x: x.id == last_message_task_id,
+                            self._tasks,
+                        ),
+                        None,
+                    )
+                ):
+                    if not message.metadata:
+                        message.metadata = {}
+                    message.metadata['taskId'] = last_message_task_id
 
         return message
 
     async def process_message(self, message: Message):
         self._messages.append(message)
-        message_id = message.messageId
-        context_id = message.contextId or ''
-        task_id = message.taskId or ''
+        message_id = message.metadata.get('messageId') if message.metadata else None
+        context_id = message.metadata.get('contextId', '') if message.metadata else ''
+        task_id = message.metadata.get('taskId', '') if message.metadata else ''
         if message_id:
             self._pending_message_ids.append(message_id)
         conversation = self.get_conversation(context_id)
@@ -96,7 +110,7 @@ class InMemoryFakeAgentManager(ApplicationManager):
         # incoming message (with ids attached).
         task = Task(
             id=task_id,
-            contextId=context_id,
+            sessionId=context_id,
             status=TaskStatus(
                 state=TaskState.submitted,
                 message=message,
@@ -223,57 +237,63 @@ _contextId = str(uuid.uuid4())
 # Extend this list to test more functionality of the UI
 _message_queue: list[Message] = [
     Message(
-        role=Role.agent,
-        parts=[Part(root=TextPart(text='Hello'))],
-        contextId=_contextId,
-        messageId=str(uuid.uuid4()),
+        role=Role.AGENT,
+        parts=[TextPart(text='Hello')],
+        metadata={
+            'contextId': _contextId,
+            'messageId': str(uuid.uuid4()),
+        },
     ),
     Message(
-        role=Role.agent,
+        role=Role.AGENT,
         parts=[
-            Part(
-                root=DataPart(
-                    data={
-                        'type': 'form',
-                        'form': {
-                            'type': 'object',
-                            'properties': {
-                                'name': {
-                                    'type': 'string',
-                                    'description': 'Enter your name',
-                                    'title': 'Name',
-                                },
-                                'date': {
-                                    'type': 'string',
-                                    'format': 'date',
-                                    'description': 'Birthday',
-                                    'title': 'Birthday',
-                                },
+            DataPart(
+                data={
+                    'type': 'form',
+                    'form': {
+                        'type': 'object',
+                        'properties': {
+                            'name': {
+                                'type': 'string',
+                                'description': 'Enter your name',
+                                'title': 'Name',
                             },
-                            'required': ['date'],
+                            'date': {
+                                'type': 'string',
+                                'format': 'date',
+                                'description': 'Birthday',
+                                'title': 'Birthday',
+                            },
                         },
-                        'form_data': {
-                            'name': 'John Smith',
-                        },
-                        'instructions': 'Please provide your birthday and name',
-                    }
-                )
+                        'required': ['date'],
+                    },
+                    'form_data': {
+                        'name': 'John Smith',
+                    },
+                    'instructions': 'Please provide your birthday and name',
+                }
             ),
         ],
-        contextId=_contextId,
-        messageId=str(uuid.uuid4()),
+        metadata={
+            'contextId': _contextId,
+            'messageId': str(uuid.uuid4()),
+        },
     ),
     Message(
-        role=Role.agent,
-        parts=[Part(root=TextPart(text='I like cats'))],
-        contextId=_contextId,
-        messageId=str(uuid.uuid4()),
+        role=Role.AGENT,
+        parts=[TextPart(text='I like cats')],
+        metadata={
+            'contextId': _contextId,
+            'messageId': str(uuid.uuid4()),
+        },
     ),
-    test_image.make_test_image(_contextId),
+    # test_image.make_test_image(_contextId),
     Message(
-        role=Role.agent,
-        parts=[Part(root=TextPart(text='And I like dogs'))],
-        contextId=_contextId,
-        messageId=str(uuid.uuid4()),
+        role=Role.AGENT,
+        parts=[TextPart(text='And I like dogs')],
+        metadata={
+            'contextId': _contextId,
+            'messageId': str(uuid.uuid4()),
+        },
     ),
 ]

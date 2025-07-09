@@ -46,14 +46,14 @@ class ConversationServer:
             os.environ.get('GOOGLE_GENAI_USE_VERTEXAI', '').upper() == 'TRUE'
         )
 
-        if agent_manager.upper() == 'ADK':
-            self.manager = ADKHostManager(
-                http_client,
-                api_key=api_key,
-                uses_vertex_ai=uses_vertex_ai,
-            )
-        else:
-            self.manager = InMemoryFakeAgentManager()
+        # if agent_manager.upper() == 'ADK':
+        #     self.manager = ADKHostManager(
+        #         http_client,
+        #         api_key=api_key,
+        #         uses_vertex_ai=uses_vertex_ai,
+        #     )
+        # else:
+        self.manager = InMemoryFakeAgentManager()
         self._file_cache = {}  # dict[str, FilePart] maps file id to message data
         self._message_to_cache = {}  # dict[str, str] maps message id to cache id
 
@@ -89,7 +89,7 @@ class ConversationServer:
             self.manager.update_api_key(api_key)
 
     async def _create_conversation(self):
-        c = await self.manager.create_conversation()
+        c = self.manager.create_conversation()
         return CreateConversationResponse(result=c)
 
     async def _send_message(self, request: Request):
