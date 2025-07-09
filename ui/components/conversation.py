@@ -111,7 +111,7 @@ def conversation():
                     StateMessage(
                         message_id=message.message_id,
                         role=message.role,
-                        content=[('Form submitted', 'text/plain')],
+                        content=[('Formulário enviado', 'text/plain')],
                     ),
                     message.message_id,
                 )
@@ -129,7 +129,7 @@ def conversation():
             )
         ):
             me.input(
-                label='How can I help you?',
+                label='Como posso ajudá-lo?',
                 on_blur=on_blur,
                 on_enter=send_message_enter,
                 style=me.Style(min_width='80vw'),

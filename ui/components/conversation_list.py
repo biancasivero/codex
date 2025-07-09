@@ -10,17 +10,17 @@ def conversation_list(conversations: list[StateConversation]):
     """Conversation list component"""
     df_data: dict[str, list[str | int]] = {
         'ID': [],
-        'Name': [],
+        'Nome': [],
         'Status': [],
-        'Messages': [],
+        'Mensagens': [],
     }
     for conversation in conversations:
         df_data['ID'].append(conversation.conversation_id)
-        df_data['Name'].append(conversation.conversation_name)
-        df_data['Status'].append('Open' if conversation.is_active else 'Closed')
-        df_data['Messages'].append(len(conversation.message_ids))
+        df_data['Nome'].append(conversation.conversation_name)
+        df_data['Status'].append('Aberto' if conversation.is_active else 'Fechado')
+        df_data['Mensagens'].append(len(conversation.message_ids))
     df = pd.DataFrame(
-        pd.DataFrame(df_data), columns=['ID', 'Name', 'Status', 'Messages']
+        pd.DataFrame(df_data), columns=['ID', 'Nome', 'Status', 'Mensagens']
     )
     with me.box(
         style=me.Style(
@@ -35,9 +35,9 @@ def conversation_list(conversations: list[StateConversation]):
             header=me.TableHeader(sticky=True),
             columns={
                 'ID': me.TableColumn(sticky=True),
-                'Name': me.TableColumn(sticky=True),
+                'Nome': me.TableColumn(sticky=True),
                 'Status': me.TableColumn(sticky=True),
-                'Messages': me.TableColumn(sticky=True),
+                'Mensagens': me.TableColumn(sticky=True),
             },
         )
         with me.content_button(

@@ -10,11 +10,11 @@ from styles.styles import (
 
 
 page_json = [
-    {'display': 'Home', 'icon': 'message', 'route': '/'},
-    {'display': 'Agents', 'icon': 'smart_toy', 'route': '/agents'},
-    {'display': 'Event List', 'icon': 'list', 'route': '/event_list'},
-    {'display': 'Task List', 'icon': 'task', 'route': '/task_list'},
-    {'display': 'Settings', 'icon': 'settings', 'route': '/settings'},
+    {'display': 'Início', 'icon': 'message', 'route': '/'},
+    {'display': 'Agentes', 'icon': 'smart_toy', 'route': '/agents'},
+    {'display': 'Lista de Eventos', 'icon': 'list', 'route': '/event_list'},
+    {'display': 'Lista de Tarefas', 'icon': 'task', 'route': '/task_list'},
+    {'display': 'Configurações', 'icon': 'settings', 'route': '/settings'},
 ]
 
 
@@ -71,7 +71,7 @@ def sidenav(current_page: str):
                     on_click=on_sidenav_menu_click,
                 ):
                     with me.box():
-                        with me.tooltip(message='Expand menu'):
+                        with me.tooltip(message='Expandir menu'):
                             me.icon(icon='menu')
                 if app_state.sidenav_open:
                     me.text('STUDIO', style=_FANCY_TEXT_GRADIENT)
@@ -88,7 +88,7 @@ def sidenav(current_page: str):
                 theme_toggle_icon(
                     9,
                     'light_mode',
-                    'Theme',
+                    'Tema',
                     not app_state.sidenav_open,
                 )
                 # menu_item(10, "settings", "Settings", not app_state.sidenav_open)
@@ -194,9 +194,9 @@ def theme_toggle_icon(key: int, icon: str, text: str, min: bool = True):
                     else 'dark_mode'
                 )
                 me.text(
-                    'Light mode'
+                    'Modo claro'
                     if me.theme_brightness() == 'dark'
-                    else 'Dark mode'
+                    else 'Modo escuro'
                 )
 
 

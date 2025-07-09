@@ -83,7 +83,7 @@ def home_page():
 
 @me.page(
     path='/agents',
-    title='Agents',
+    title='Agentes',
     on_load=on_load,
     security_policy=security_policy,
 )
@@ -95,7 +95,7 @@ def another_page():
 
 @me.page(
     path='/conversation',
-    title='Conversation',
+    title='Conversa',
     on_load=on_load,
     security_policy=security_policy,
 )
@@ -107,7 +107,7 @@ def chat_page():
 
 @me.page(
     path='/event_list',
-    title='Event List',
+    title='Lista de Eventos',
     on_load=on_load,
     security_policy=security_policy,
 )
@@ -119,7 +119,7 @@ def event_page():
 
 @me.page(
     path='/settings',
-    title='Settings',
+    title='Configurações',
     on_load=on_load,
     security_policy=security_policy,
 )
@@ -131,7 +131,7 @@ def settings_page():
 
 @me.page(
     path='/task_list',
-    title='Task List',
+    title='Lista de Tarefas',
     on_load=on_load,
     security_policy=security_policy,
 )

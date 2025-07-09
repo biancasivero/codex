@@ -45,16 +45,16 @@ def api_key_dialog():
             style=me.Style(display='flex', flex_direction='column', gap=12)
         ):
             me.text(
-                'Google API Key Required',
+                'Chave da API Google Necessária',
                 type='headline-4',
                 style=me.Style(margin=me.Margin(bottom=10)),
             )
             me.text(
-                'Please enter your Google API Key to use the application.',
+                'Por favor, insira sua Chave da API Google para usar a aplicação.',
                 style=me.Style(margin=me.Margin(bottom=20)),
             )
             me.input(
-                label='Google API Key',
+                label='Chave da API Google',
                 value=state.api_key,
                 on_blur=on_api_key_change,
                 type='password',
@@ -62,4 +62,4 @@ def api_key_dialog():
             )
 
         with dialog_actions():
-            me.button('Save', on_click=save_api_key)
+            me.button('Salvar', on_click=save_api_key)
