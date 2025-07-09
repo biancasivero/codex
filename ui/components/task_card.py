@@ -3,7 +3,7 @@ import json
 import mesop as me
 import pandas as pd
 
-from state.state import ContentPart, SessionTask, StateTask
+from state.state import ContentPart, SessionTask, StateTask, AppState
 
 
 def message_string(content: ContentPart) -> str:
