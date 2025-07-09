@@ -12,10 +12,23 @@ dependencies = [
     "fastapi>=0.115.0",
     "uvicorn>=0.34.0",
     "mesop>=1.0.0",
-    "a2a-sdk",
+    "a2a-sdk>=0.2.9",
     "pandas>=2.2.0",
     "google-genai>=1.9.0",
     "google-adk>=1.0.0",
+    "click>=8.1.8",
+    "fastmcp>=1.0",
+    "google-cloud-aiplatform>=1.91.0",
+    "google-generativeai>=0.8.5",
+    "langchain-google-genai>=2.0.10",
+    "langchain-mcp-adapters>=0.0.9",
+    "langgraph>=0.4.1",
+    "mcp[cli]>=1.5.0",
+    "nest-asyncio>=1.6.0",
+    "networkx>=3.4.2",
+    "numpy>=2.2.5",
+    "python-dotenv>=1.1.0",
+    "marvin>=3.0.0",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -31,4 +44,4 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "ruff>=0.11.2",
-]
+] 
