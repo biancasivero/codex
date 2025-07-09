@@ -1,0 +1,48 @@
+{
+    "name": "Marvin Contact Extractor",
+    "description": "Extracts structured contact information from text using Marvin's extraction capabilities",
+    "url": "http://localhost:10030/",
+    "provider": null,
+    "version": "1.0.0",
+    "documentationUrl": null,
+    "capabilities": {
+        "streaming": "True",
+        "pushNotifications": "False",
+        "stateTransitionHistory": "False"
+    },
+    "authentication": {
+        "credentials": null,
+        "schemes": [
+            "public"
+        ]
+    },
+    "defaultInputModes": [
+        "text",
+        "text/plain",
+        "application/json"
+    ],
+    "defaultOutputModes": [
+        "text",
+        "text/plain",
+        "application/json"
+    ],
+    "skills": [
+        {
+            "id": "extract_contacts",
+            "name": "Contact Information Extraction",
+            "description": "Extracts structured contact information from text",
+            "tags": [
+                "contact info",
+                "structured extraction", 
+                "information extraction"
+            ],
+            "examples": [
+                "My name is John Doe, email: john@example.com, phone: (555) 123-4567",
+                "Extrair informações de contato de: João Silva, desenvolvedor da TechCorp, joao@techcorp.com",
+                "Processar dados de contato do texto fornecido"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        }
+    ]
+}
