@@ -27,6 +27,7 @@ from service.types import (
 from .adk_host_manager import ADKHostManager, get_message_id
 from .application_manager import ApplicationManager
 from .in_memory_manager import InMemoryFakeAgentManager
+from .mcp_agent_manager import MCPAgentManager
 
 
 class ConversationServer:
@@ -48,6 +49,12 @@ class ConversationServer:
 
         if agent_manager.upper() == 'ADK':
             self.manager = ADKHostManager(
+                http_client,
+                api_key=api_key,
+                uses_vertex_ai=uses_vertex_ai,
+            )
+        elif agent_manager.upper() == 'MCP':
+            self.manager = MCPAgentManager(
                 http_client,
                 api_key=api_key,
                 uses_vertex_ai=uses_vertex_ai,
@@ -85,7 +92,7 @@ class ConversationServer:
 
     # Update API key in manager
     def update_api_key(self, api_key: str):
-        if isinstance(self.manager, ADKHostManager):
+        if isinstance(self.manager, (ADKHostManager, MCPAgentManager)):
             self.manager.update_api_key(api_key)
 
     async def _create_conversation(self):
@@ -97,7 +104,7 @@ class ConversationServer:
         message = Message(**message_data['params'])
         message = self.manager.sanitize_message(message)
         loop = asyncio.get_event_loop()
-        if isinstance(self.manager, ADKHostManager):
+        if isinstance(self.manager, (ADKHostManager, MCPAgentManager)):
             t = threading.Thread(
                 target=lambda: cast(
                     ADKHostManager, self.manager
