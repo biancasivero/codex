@@ -9,14 +9,13 @@ import click
 import httpx
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
-from a2a.server.tasks import InMemoryPushNotifier, InMemoryTaskStore
+from a2a.server.tasks import InMemoryTaskStore
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
-from agents.marvin.agent import ExtractorAgent
 from dotenv import load_dotenv
 from pydantic import BaseModel, EmailStr, Field
 
-from agent import ExtractorAgent  # type: ignore[import-untyped]
-from agent_executor import ExtractorAgentExecutor  # type: ignore[import-untyped]
+from agents.marvin.agent import ExtractorAgent
+from agents.marvin.agent_executor import ExtractorAgentExecutor
 
 load_dotenv()
 
@@ -57,7 +56,7 @@ def main(host, port, result_type, instructions):
     request_handler = DefaultRequestHandler(
         agent_executor=ExtractorAgentExecutor(agent=agent),
         task_store=InMemoryTaskStore(),
-        push_notifier=InMemoryPushNotifier(httpx_client),
+        push_notifier=None,
     )
     server = A2AStarletteApplication(
         agent_card=get_agent_card(host, port), http_handler=request_handler
