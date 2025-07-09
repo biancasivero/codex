@@ -44,18 +44,27 @@ class ExtractorAgentExecutor(AgentExecutor):
             content = item["content"]
 
             logger.info(
-                f"Stream item received: complete={is_task_complete}, require_input={require_user_input}, content_len={len(content)}"
+                f"Stream item received: complete={is_task_complete}, require_input={require_user_input}, content_len={len(str(content))}"
             )
 
             agent_outcome = await self.agent.invoke(query, task.contextId)
             is_task_complete = agent_outcome["is_task_complete"]
             require_user_input = not is_task_complete
-            content = agent_outcome.get("text_parts", [])
+            text_parts = agent_outcome.get("text_parts", [])
             data = agent_outcome.get("data", {})
+            
+            # Converter text_parts para string
+            text_content = ""
+            if text_parts:
+                if isinstance(text_parts, list):
+                    text_content = "\n".join([part.text if hasattr(part, 'text') else str(part) for part in text_parts])
+                else:
+                    text_content = str(text_parts)
+            
             artifact = new_text_artifact(
                 name="current_result",
                 description="Result of request to agent.",
-                text=content,
+                text=text_content,
             )
             if data:
                 artifact = new_data_artifact(
@@ -70,7 +79,7 @@ class ExtractorAgentExecutor(AgentExecutor):
                         status=TaskStatus(
                             state=TaskState.input_required,
                             message=new_agent_text_message(
-                                content,
+                                text_content,
                                 task.contextId,
                                 task.id,
                             ),

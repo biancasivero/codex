@@ -7,6 +7,10 @@ import asyncio
 import uvicorn
 import sys
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente
+load_dotenv()
 
 # Adicionar o diretório pai ao path
 sys.path.append(str(Path(__file__).parent.parent.parent))
