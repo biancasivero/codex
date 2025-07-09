@@ -12,6 +12,13 @@ def message_string(content: ContentPart) -> str:
     return json.dumps(content)
 
 
+def clear_task_history():
+    """Clear all tasks from the task list"""
+    state = me.state(AppState)
+    state.task_list = []
+    print("🗑️ Histórico de tarefas limpo!")
+
+
 @me.component
 def task_card(tasks: list[SessionTask]):
     """Task card component"""
@@ -26,17 +33,61 @@ def task_card(tasks: list[SessionTask]):
         df_data['Status'].append(task.task.state)
         df_data['Output'].append(flatten_artifacts(task.task))
     df = pd.DataFrame(pd.DataFrame(df_data), columns=columns)
+    
+    # Header com botão de limpar
+    with me.box(
+        style=me.Style(
+            display='flex',
+            justify_content='space-between',
+            align_items='center',
+            margin=me.Margin.all(16),
+            padding=me.Padding.all(8),
+            background='#f5f5f5',
+            border_radius=8
+        )
+    ):
+        me.text(
+            f"📋 Total de tarefas: {len(tasks)}",
+            style=me.Style(
+                font_weight='bold',
+                font_size=16
+            )
+        )
+        me.button(
+            "🗑️ Limpar Histórico",
+            on_click=clear_task_history,
+            type="stroked",
+            style=me.Style(
+                background='#ff4444',
+                color='white',
+                border_radius=4,
+                padding=me.Padding.symmetric(horizontal=16, vertical=8)
+            )
+        )
+    
+    # Tabela de tarefas
     with me.box(
         style=me.Style(
             display='flex',
             justify_content='space-between',
         )
     ):
-        me.table(
-            df,
-            header=me.TableHeader(sticky=True),
-            columns=dict([(c, me.TableColumn(sticky=True)) for c in columns]),
-        )
+        if len(tasks) > 0:
+            me.table(
+                df,
+                header=me.TableHeader(sticky=True),
+                columns=dict([(c, me.TableColumn(sticky=True)) for c in columns]),
+            )
+        else:
+            me.text(
+                "🎉 Nenhuma tarefa no histórico. Use o Marvin para extrair contatos!",
+                style=me.Style(
+                    text_align='center',
+                    font_size=16,
+                    color='#666',
+                    margin=me.Margin.all(32)
+                )
+            )
 
 
 def flatten_artifacts(task: StateTask) -> str:
