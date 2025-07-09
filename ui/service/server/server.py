@@ -24,7 +24,7 @@ from service.types import (
     SendMessageResponse,
 )
 
-from .adk_host_manager import ADKHostManager, get_message_id
+# from .adk_host_manager import ADKHostManager, get_message_id
 from .application_manager import ApplicationManager
 from .in_memory_manager import InMemoryFakeAgentManager
 
