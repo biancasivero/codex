@@ -4,13 +4,40 @@
   "description": "A2A Protocol servers for various agents",
   "main": "BaseA2AServer.js",
   "scripts": {
-    "test": "node test/test-base-server.js",
+    "test": "jest",
+    "test:unit": "jest tests/unit",
+    "test:integration": "jest tests/integration",
+    "test:performance": "jest tests/performance",
+    "test:load": "artillery run tests/load/*.yml",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "start": "node BaseA2AServer.js"
   },
   "dependencies": {
     "express": "^4.18.2",
     "ioredis": "^5.3.2",
     "compression": "^1.7.4"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "redis-memory-server": "^0.9.0",
+    "artillery": "^2.0.1",
+    "@types/jest": "^29.5.0",
+    "jest-environment-node": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "*.js",
+      "ui/shared/*.js",
+      "!node_modules/**",
+      "!tests/**"
+    ],
+    "coverageReporters": ["text", "lcov", "html"],
+    "testMatch": ["**/tests/**/*.test.js"],
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.js"],
+    "testTimeout": 10000
   },
   "keywords": ["a2a", "agent", "protocol", "server"],
   "author": "Diego",
