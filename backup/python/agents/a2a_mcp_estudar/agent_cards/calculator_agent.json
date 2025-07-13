@@ -1,0 +1,83 @@
+{
+    "name": "Calculator Agent",
+    "description": "Agente especializado em cálculos matemáticos usando ferramentas MCP",
+    "url": "http://localhost:10103/",
+    "provider": null,
+    "version": "1.0.0",
+    "documentationUrl": null,
+    "capabilities": {
+        "streaming": "True",
+        "pushNotifications": "True",
+        "stateTransitionHistory": "False"
+    },
+    "authentication": {
+        "credentials": null,
+        "schemes": [
+            "public"
+        ]
+    },
+    "defaultInputModes": [
+        "text",
+        "text/plain"
+    ],
+    "defaultOutputModes": [
+        "text",
+        "text/plain",
+        "application/json"
+    ],
+    "skills": [
+        {
+            "id": "basic_calculations",
+            "name": "Basic Calculations",
+            "description": "Realiza cálculos matemáticos básicos (soma, subtração, multiplicação, divisão, potência, etc.)",
+            "tags": [
+                "math",
+                "calculation",
+                "arithmetic",
+                "basic operations"
+            ],
+            "examples": [
+                "Calcule 15 + 25",
+                "Qual é 2 elevado a 8?",
+                "Divida 100 por 4",
+                "Calcule a raiz quadrada de 64"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        },
+        {
+            "id": "math_analysis",
+            "name": "Math Analysis",
+            "description": "Analisa operações matemáticas e valida resultados",
+            "tags": [
+                "math analysis",
+                "validation",
+                "verification"
+            ],
+            "examples": [
+                "Verifique se este cálculo está correto",
+                "Analise esta operação matemática",
+                "Confirme este resultado"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        },
+        {
+            "id": "calculation_tracking",
+            "name": "Calculation Tracking",
+            "description": "Gera IDs únicos para rastrear cálculos e validar dados de entrada",
+            "tags": [
+                "tracking",
+                "id generation",
+                "data validation"
+            ],
+            "examples": [
+                "Crie um ID para este cálculo",
+                "Rastreie esta operação matemática",
+                "Valide os dados de entrada"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        }
+    ]
+} 
