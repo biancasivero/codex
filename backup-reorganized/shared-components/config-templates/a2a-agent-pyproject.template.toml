@@ -1,0 +1,55 @@
+# A2A Agent Project Template
+# Standard pyproject.toml configuration for A2A MCP agents
+# Replace {PROJECT_NAME} and {DESCRIPTION} with your values
+
+[project]
+name = "{PROJECT_NAME}"
+version = "0.1.0"
+description = "{DESCRIPTION}"
+readme = "README.md"
+requires-python = ">=3.13"
+
+# Core A2A dependencies - common across all projects
+dependencies = [
+    "a2a-sdk>=0.2.9",        # Core A2A framework
+    "click>=8.1.8",          # CLI interface
+    "fastmcp>=1.0",          # MCP framework
+    "mcp[cli]>=1.5.0",       # MCP CLI tools
+    "pydantic>=2.11.4",      # Data validation
+    "httpx>=0.28.1",         # HTTP client
+    "nest-asyncio>=1.6.0",   # Async support
+]
+
+# Optional dependencies for specific use cases
+# Uncomment as needed:
+# 
+# # For Google AI/LLM integration:
+# "google-adk>=1.0.0",
+# "google-cloud-aiplatform>=1.91.0", 
+# "google-generativeai>=0.8.5",
+# "langchain-google-genai>=2.0.10",
+#
+# # For LangGraph workflows:
+# "langgraph>=0.4.1",
+# "langchain-mcp-adapters>=0.0.9",
+# "networkx>=3.4.2",
+#
+# # For data processing:
+# "numpy>=2.2.5",
+# "pandas>=2.2.3",
+
+[project.scripts]
+{PROJECT_NAME} = "{PROJECT_NAME}:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Development dependencies (optional)
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "black>=24.0.0", 
+    "ruff>=0.1.0",
+    "mypy>=1.8.0",
+]

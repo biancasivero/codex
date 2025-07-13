@@ -1,0 +1,85 @@
+{
+    "name": "Data Validator Agent",
+    "description": "Agente especializado em validação de dados usando ferramentas MCP",
+    "url": "http://localhost:10104/",
+    "provider": null,
+    "version": "1.0.0",
+    "documentationUrl": null,
+    "capabilities": {
+        "streaming": "True",
+        "pushNotifications": "True",
+        "stateTransitionHistory": "False"
+    },
+    "authentication": {
+        "credentials": null,
+        "schemes": [
+            "public"
+        ]
+    },
+    "defaultInputModes": [
+        "text",
+        "text/plain",
+        "application/json"
+    ],
+    "defaultOutputModes": [
+        "text",
+        "text/plain",
+        "application/json"
+    ],
+    "skills": [
+        {
+            "id": "json_validation",
+            "name": "JSON Validation",
+            "description": "Valida estruturas JSON, identifica erros de sintaxe e formata dados",
+            "tags": [
+                "json",
+                "validation",
+                "data integrity",
+                "syntax checking"
+            ],
+            "examples": [
+                "Valide este JSON e corrija erros",
+                "Verifique a integridade destes dados JSON",
+                "Analise e formate esta estrutura de dados"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        },
+        {
+            "id": "data_formatting",
+            "name": "Data Formatting",
+            "description": "Formata dados de texto para padronização e normalização",
+            "tags": [
+                "data formatting",
+                "normalization",
+                "text processing",
+                "standardization"
+            ],
+            "examples": [
+                "Padronize estes dados de texto",
+                "Normalize os nomes nesta lista",
+                "Formate os dados para consistência"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        },
+        {
+            "id": "data_tracking",
+            "name": "Data Tracking",
+            "description": "Gera IDs únicos para rastrear validações e processos de dados",
+            "tags": [
+                "tracking",
+                "audit trail",
+                "data lineage",
+                "unique identifiers"
+            ],
+            "examples": [
+                "Crie um ID para esta validação",
+                "Rastreie este processo de validação",
+                "Gere identificador para auditoria"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        }
+    ]
+} 

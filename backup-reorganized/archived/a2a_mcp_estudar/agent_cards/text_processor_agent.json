@@ -1,0 +1,81 @@
+{
+    "name": "Text Processor Agent",
+    "description": "Agente especializado em processamento de texto usando ferramentas MCP",
+    "url": "http://localhost:10102/",
+    "provider": null,
+    "version": "1.0.0",
+    "documentationUrl": null,
+    "capabilities": {
+        "streaming": "True",
+        "pushNotifications": "True",
+        "stateTransitionHistory": "False"
+    },
+    "authentication": {
+        "credentials": null,
+        "schemes": [
+            "public"
+        ]
+    },
+    "defaultInputModes": [
+        "text",
+        "text/plain"
+    ],
+    "defaultOutputModes": [
+        "text",
+        "text/plain",
+        "application/json"
+    ],
+    "skills": [
+        {
+            "id": "text_formatting",
+            "name": "Text Formatting",
+            "description": "Formata texto em diferentes estilos (maiúscula, minúscula, título, etc.)",
+            "tags": [
+                "text processing",
+                "formatting",
+                "string manipulation"
+            ],
+            "examples": [
+                "Converta 'hello world' para título",
+                "Transforme este texto para maiúscula",
+                "Formate o texto em diferentes estilos"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        },
+        {
+            "id": "json_validation",
+            "name": "JSON Validation",
+            "description": "Valida estruturas JSON e identifica erros de formatação",
+            "tags": [
+                "json",
+                "validation",
+                "data parsing"
+            ],
+            "examples": [
+                "Valide este JSON: {\"name\": \"test\"}",
+                "Verifique se esta string é JSON válido",
+                "Analise a estrutura deste JSON"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        },
+        {
+            "id": "id_generation",
+            "name": "ID Generation",
+            "description": "Gera identificadores únicos para diferentes contextos",
+            "tags": [
+                "id generation",
+                "unique identifiers",
+                "uuid"
+            ],
+            "examples": [
+                "Gere um ID único para uma sessão",
+                "Crie um identificador para uma tarefa",
+                "Preciso de um ID único com prefixo 'user'"
+            ],
+            "inputModes": null,
+            "outputModes": null
+        }
+    ]
+} 

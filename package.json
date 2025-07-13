@@ -1,0 +1,18 @@
+{
+  "name": "codex-a2a-servers",
+  "version": "1.0.0",
+  "description": "A2A Protocol servers for various agents",
+  "main": "BaseA2AServer.js",
+  "scripts": {
+    "test": "node test/test-base-server.js",
+    "start": "node BaseA2AServer.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ioredis": "^5.3.2",
+    "compression": "^1.7.4"
+  },
+  "keywords": ["a2a", "agent", "protocol", "server"],
+  "author": "Diego",
+  "license": "MIT"
+}

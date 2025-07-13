@@ -2,7 +2,8 @@
 
 import threading
 import time
-
+import asyncio
+import weakref
 from typing import Any, Optional
 
 
@@ -43,6 +44,8 @@ class InMemoryCache:
                     self._cache_data: dict[str, dict[str, Any]] = {}
                     self._ttl: dict[str, float] = {}
                     self._data_lock: threading.Lock = threading.Lock()
+                    self._cleanup_interval = 60  # Cleanup every 60 seconds
+                    self._start_cleanup_thread()
                     self._initialized = True
 
     def set(self, key: str, value: Any, ttl: int | None = None) -> None:
@@ -106,3 +109,31 @@ class InMemoryCache:
             self._ttl.clear()
             return True
         return False
+
+    def _start_cleanup_thread(self) -> None:
+        """Start background thread for automatic TTL cleanup."""
+        def cleanup_worker():
+            while True:
+                try:
+                    time.sleep(self._cleanup_interval)
+                    self._cleanup_expired()
+                except Exception:
+                    # Silently continue if cleanup fails
+                    pass
+        
+        cleanup_thread = threading.Thread(target=cleanup_worker, daemon=True)
+        cleanup_thread.start()
+
+    def _cleanup_expired(self) -> None:
+        """Remove expired entries from cache."""
+        current_time = time.time()
+        with self._data_lock:
+            expired_keys = [
+                key for key, expiry_time in self._ttl.items() 
+                if current_time > expiry_time
+            ]
+            for key in expired_keys:
+                if key in self._cache_data:
+                    del self._cache_data[key]
+                if key in self._ttl:
+                    del self._ttl[key]
