@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 def main(host, port):
     """Entry point for the A2A Chart Generation Agent."""
     try:
-        capabilities = AgentCapabilities(streaming=False)
+        capabilities = AgentCapabilities(streaming=True)
         skill = AgentSkill(
             id='chart_generator',
             name='Chart Generator',
