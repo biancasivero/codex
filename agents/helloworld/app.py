@@ -83,4 +83,4 @@ async def skill_super_hello_world(request: dict):
 
 if __name__ == "__main__":
     print("🤖 Iniciando HelloWorld Agent na porta 9999...")
-    uvicorn.run(app, host="0.0.0.0", port=9999) 
+    uvicorn.run(app, host="localhost", port=9999) 

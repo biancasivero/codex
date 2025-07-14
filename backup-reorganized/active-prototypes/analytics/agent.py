@@ -1,5 +1,6 @@
 import base64
 import logging
+import uuid
 
 from collections.abc import AsyncIterable
 from io import BytesIO
@@ -131,17 +132,79 @@ class ChartGenerationAgent:
             f'[invoke] Using session_id: {session_id} for query: {query}'
         )
 
-        inputs = {
-            'user_prompt': query,
-            'session_id': session_id,
-        }
+        try:
+            inputs = {
+                'user_prompt': query,
+                'session_id': session_id,
+            }
 
-        response = self.chart_crew.kickoff(inputs)
-        logger.info(f'[invoke] Chart tool returned image ID: {response}')
-        return response
+            response = self.chart_crew.kickoff(inputs)
+            logger.info(f'[invoke] Chart crew kickoff response: {response}')
+            
+            # Verificar se a resposta é válida
+            if response is None:
+                logger.error('[invoke] Chart crew returned None')
+                raise ValueError('Chart crew returned None')
+            
+            # Criar um objeto de resultado mock se necessário
+            class MockResult:
+                def __init__(self, raw_value):
+                    self.raw = raw_value
+            
+            # Se response for uma string, criar um objeto mock
+            if isinstance(response, str):
+                result = MockResult(response)
+            else:
+                result = response
+            
+            logger.info(f'[invoke] Chart tool returned result: {result}')
+            return result
+            
+        except Exception as e:
+            logger.error(f'[invoke] Error in chart crew kickoff: {e}')
+            # Retornar um resultado de erro
+            class ErrorResult:
+                def __init__(self, error_msg):
+                    self.raw = f'error-{uuid.uuid4().hex}'
+                    self.error = error_msg
+            
+            return ErrorResult(str(e))
 
     async def stream(self, query: str) -> AsyncIterable[dict[str, Any]]:
-        raise NotImplementedError('Streaming is not supported.')
+        """Streaming implementation for Chart Generator Agent"""
+        try:
+            # Simulate streaming chunks while processing
+            yield {"type": "status", "message": "Starting chart generation..."}
+            
+            # Generate session ID for streaming
+            session_id = f'stream-{uuid.uuid4().hex}'
+            
+            # Process the query using the crew
+            result = self.invoke(query, session_id)
+            
+            yield {"type": "status", "message": "Chart processing completed"}
+            
+            # Get the final result
+            data = self.get_image_data(session_id=session_id, image_key=result.raw)
+            
+            if data and not data.error:
+                yield {
+                    "type": "result", 
+                    "data": {
+                        "name": data.name,
+                        "id": data.id,
+                        "success": True
+                    }
+                }
+            else:
+                yield {
+                    "type": "error", 
+                    "message": data.error if data else "Failed to generate chart"
+                }
+                
+        except Exception as e:
+            logger.error(f"Error in stream method: {e}")
+            yield {"type": "error", "message": str(e)}
 
     def get_image_data(self, session_id: str, image_key: str) -> Imagedata:
         session_data = cache.get(session_id)

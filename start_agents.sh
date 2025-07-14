@@ -14,7 +14,7 @@ check_port() {
 start_helloworld() {
     echo "🔄 Iniciando HelloWorld Agent na porta 9999..."
     cd /Users/agents/Desktop/codex/agents/helloworld
-    nohup uv run . --host 0.0.0.0 --port 9999 > helloworld_agent.log 2>&1 &
+    nohup uv run . --host localhost --port 9999 > helloworld_agent.log 2>&1 &
     echo "✅ HelloWorld Agent iniciado (PID: $!)"
 }
 
@@ -22,7 +22,7 @@ start_helloworld() {
 start_analytics() {
     echo "🔄 Iniciando Analytics Agent na porta 10011..."
     cd /Users/agents/Desktop/codex/backup-reorganized/active-prototypes/analytics
-    nohup uv run . --host 0.0.0.0 --port 10011 > analytics_agent.log 2>&1 &
+    nohup uv run . --host localhost --port 10011 > analytics_agent.log 2>&1 &
     echo "✅ Analytics Agent iniciado (PID: $!)"
 }
 

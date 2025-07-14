@@ -14,6 +14,92 @@ from .chat_bubble import chat_bubble
 from .form_render import form_sent, is_form, render_form
 
 
+def get_mesop_docs_response() -> str:
+    """Retorna informações sobre a documentação do Mesop"""
+    return """
+## 📚 Documentação do Mesop
+
+**Mesop** é um framework Python para construir aplicações web interativas usando apenas Python, sem necessidade de HTML, CSS ou JavaScript.
+
+### 🔗 Links Úteis:
+- **Site Oficial**: [https://google.github.io/mesop/](https://google.github.io/mesop/)
+- **GitHub**: [https://github.com/google/mesop](https://github.com/google/mesop)
+- **Documentação**: [https://google.github.io/mesop/getting_started/](https://google.github.io/mesop/getting_started/)
+
+### 🚀 Funcionalidades Principais:
+- **Componentes Reativos**: Criação de interfaces usando decoradores `@me.component`
+- **Estado Gerenciado**: Sistema de estado com `@me.stateclass` e `me.state()`
+- **Eventos Interativos**: Manipulação de eventos como cliques, inputs, etc.
+- **Theming**: Suporte a temas claro/escuro
+- **Segurança**: Políticas de segurança configuráveis
+
+### 🛠️ Componentes Utilizados nesta UI:
+- `me.box()` - Containers e layouts
+- `me.text()` - Textos e títulos
+- `me.input()` - Campos de entrada
+- `me.button()` - Botões interativos
+- `me.markdown()` - Renderização de markdown
+- `me.image()` - Exibição de imagens
+- `me.table()` - Tabelas de dados
+- `me.sidenav()` - Navegação lateral
+
+### 📖 Exemplos de Uso:
+```python
+import mesop as me
+
+@me.stateclass
+class State:
+    message: str = ""
+
+@me.component
+def app():
+    state = me.state(State)
+    me.input(label="Digite algo", on_blur=update_message)
+    me.text(f"Mensagem: {state.message}")
+
+def update_message(e: me.InputBlurEvent):
+    state = me.state(State)
+    state.message = e.value
+```
+
+**💡 Dica**: Esta UI foi construída inteiramente com Mesop! Explore os arquivos em `ui/components/` para ver exemplos práticos de implementação.
+"""
+
+def is_mesop_docs_command(message: str) -> bool:
+    """Verifica se a mensagem é um comando para mostrar documentação do Mesop"""
+    return message.strip().lower().startswith("@mesop docs")
+
+
+async def handle_mesop_docs_command(conversation_id: str, message_id: str):
+    """Processa comando @Mesop docs"""
+    app_state = me.state(AppState)
+    
+    # Criar mensagem de resposta com documentação
+    docs_response = get_mesop_docs_response()
+    
+    # Adicionar resposta ao estado
+    response_message = StateMessage(
+        message_id=f"mesop-docs-{message_id}",
+        role=Role.agent,
+        content=[(docs_response, 'text/plain')],
+    )
+    
+    if not app_state.messages:
+        app_state.messages = []
+    app_state.messages.append(response_message)
+    
+    # Atualizar conversa
+    conversation = next(
+        filter(
+            lambda x: x.conversation_id == conversation_id,
+            app_state.conversations,
+        ),
+        None,
+    )
+    if conversation:
+        conversation.message_ids.append(response_message.message_id)
+
+
 @me.stateclass
 class PageState:
     """Local Page State"""
@@ -23,7 +109,7 @@ class PageState:
 
 
 def on_blur(e: me.InputBlurEvent):
-    """Input handler"""
+    """Input blur handler"""
     state = me.state(PageState)
     state.message_content = e.value
 
@@ -31,6 +117,24 @@ def on_blur(e: me.InputBlurEvent):
 async def send_message(message: str, message_id: str = ''):
     state = me.state(PageState)
     app_state = me.state(AppState)
+    
+    # Verificar se é um comando @Mesop docs
+    if is_mesop_docs_command(message):
+        # Adicionar mensagem do usuário
+        user_message = StateMessage(
+            message_id=message_id,
+            role=Role.user,
+            content=[(message, 'text/plain')],
+        )
+        if not app_state.messages:
+            app_state.messages = []
+        app_state.messages.append(user_message)
+        
+        # Processar comando e adicionar resposta
+        await handle_mesop_docs_command(state.conversation_id, message_id)
+        return
+    
+    # Processar mensagem normalmente
     c = next(
         (
             x
@@ -133,6 +237,7 @@ def conversation():
                 on_blur=on_blur,
                 on_enter=send_message_enter,
                 style=me.Style(min_width='80vw'),
+                placeholder='Digite sua mensagem ou @Mesop docs para documentação...',
             )
             with me.content_button(
                 type='flat',

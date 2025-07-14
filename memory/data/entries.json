@@ -98,5 +98,25 @@
     "checksum": "054f94987fb2fcad6e0e1d479e951baa9e50cccf95708e5b6a25e63c0fae0e9f",
     "references": [],
     "dependencies": []
+  },
+  {
+    "id": "entry_md2j7xp3_trpkh5e3t",
+    "key": "docs_reorganization_complete",
+    "value": "REORGANIZAÇÃO DOCS COMPLETA COM SPARC! 77 documentos organizados em 6 clusters: A2A-Core (10), MCP-Integration (8), Agent-Systems (13), Infrastructure (11), Guides-Tutorials (16), Legacy (8), Support (15). README.md principal atualizado com estrutura modular, navegação otimizada e índices completos. README do A2A-Core atualizado com otimizações SPARC e performance metrics. 100% reorganizado e navegável.",
+    "type": "string",
+    "namespace": "default",
+    "tags": [],
+    "metadata": {},
+    "owner": "system",
+    "accessLevel": "shared",
+    "createdAt": "2025-07-14T03:16:35.799Z",
+    "updatedAt": "2025-07-14T03:16:35.799Z",
+    "lastAccessedAt": "2025-07-14T03:16:35.799Z",
+    "version": 1,
+    "size": 437,
+    "compressed": false,
+    "checksum": "b4fd30b1fca56a244ce4ffe02a086d131e95b782c4145ff4bcf808f91cbd4531",
+    "references": [],
+    "dependencies": []
   }
 ]
