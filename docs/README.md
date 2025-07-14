@@ -1,61 +1,107 @@
-# Documentação do Sistema Codex
+# 📚 Documentação do Projeto - Organizada por Clusters SPARC
 
-> Sistema integrado de agentes A2A com orquestração SPARC e integração MCP
+> **🔄 Reorganização SPARC:** 77 documentos categorizados e organizados em estrutura modular otimizada
 
-## 📋 Visão Geral
+## 🎯 **Overview**
 
-Este repositório contém a documentação completa do Sistema Codex, uma plataforma avançada de orquestração de agentes que combina:
+Esta documentação foi **completamente reorganizada** usando **SPARC Orchestration** em 6 clusters temáticos principais + suporte, facilitando a navegação e manutenção do sistema integrado de agentes que combina:
 
-- **Sistema A2A (Agent-to-Agent)**: Comunicação e coordenação entre agentes autônomos
-- **SPARC Orchestration**: 17 modos especializados de desenvolvimento e análise
-- **Integração MCP**: Model Context Protocol para extensibilidade de ferramentas
-- **Interface Web**: Dashboard de monitoramento e controle em tempo real
+- **Sistema A2A (Agent-to-Agent)**: Comunicação otimizada com BaseA2AServer e cache
+- **SPARC Orchestration**: 17 modos especializados para desenvolvimento e análise
+- **MCP Integration**: Model Context Protocol com ferramentas avançadas
+- **Infrastructure**: PostgreSQL, Docker e monitoramento enterprise
 
-## 🗂️ Estrutura da Documentação
+## 📂 **Estrutura de Clusters**
 
-A documentação está organizada em **7 clusters temáticos** com **72 documentos** especializados:
+A documentação está organizada em **6 clusters principais + suporte** com **77 documentos** reorganizados:
 
-### [📡 A2A-Core](./A2A-Core/README.md) 
-Arquitetura central e especificações do protocolo A2A
-- Especificações da API e protocolos de comunicação
-- Arquitetura do sistema e padrões de integração
-- Guias de migração e modos de interação
+### **🚀 1. A2A Core** - Sistema Principal
+📁 [`A2A-Core/`](./A2A-Core/) - **10 documentos**
 
-### [🤖 Agent-Systems](./Agent-Systems/README.md)
-Sistemas de agentes e orquestração
-- Agentes especializados (Auto-commit, Organizador, Guardian)
-- Orchestrator e coordenação multi-agente
-- Estados de tarefas e monitoramento de agentes
+**Arquitetura, API e componentes principais do sistema A2A otimizado**
 
-### [📚 Guides-Tutorials](./Guides-Tutorials/README.md)
-Guias práticos e tutoriais passo-a-passo
-- Guia completo para iniciantes
-- Configurações e comandos rápidos
-- Integrações de UI e TypeScript
+| Documento | Descrição |
+|-----------|-----------|
+| [A2A-ARCHITECTURE.md](./A2A-Core/A2A-ARCHITECTURE.md) | Arquitetura completa do sistema A2A |
+| [A2A-PROTOCOL-API.md](./A2A-Core/A2A-PROTOCOL-API.md) | Especificação técnica da API A2A |
+| [A2A-MIGRATION-GUIDE.md](./A2A-Core/A2A-MIGRATION-GUIDE.md) | Guia de migração para BaseA2AServer |
+| [A2A-UNIFIED-SYSTEM.md](./A2A-Core/A2A-UNIFIED-SYSTEM.md) | Sistema unificado A2A |
 
-### [🏗️ Infrastructure](./Infrastructure/README.md)
-Infraestrutura, banco de dados e containerização
-- PostgreSQL e sistemas de memória híbrida
-- Docker Compose e monitoramento
-- Adaptações Mem0-OSS
+---
 
-### [🔧 MCP-Integration](./MCP-Integration/README.md)
-Model Context Protocol e integrações de ferramentas
-- Bridge MCP Tools e DiegoTools
-- Simplificação de ferramentas e testes
-- Distinções entre MCP e Agents
+### **🔌 2. MCP Integration** - Integrações MCP  
+📁 [`MCP-Integration/`](./MCP-Integration/) - **8 documentos**
 
-### [🆘 Support](./Support/README.md)
-Documentação de suporte e coordenação
-- Resolução de problemas e debugging
-- Organizações e scores de qualidade
-- Coordenação e bancos de memória
+**Model Context Protocol, ferramentas e bridges**
 
-### [📦 Legacy](./Legacy/README.md)
-Documentos de versões anteriores e otimizações
-- Relatórios de otimização A2A
-- Implementações de TaskStatus
-- Melhorias de protocolo
+| Documento | Descrição |
+|-----------|-----------|
+| [MCP_TOOLS_INTEGRATION.md](./MCP-Integration/MCP_TOOLS_INTEGRATION.md) | Integração de ferramentas MCP |
+| [CLAUDE_CODE_A2A_BRIDGE_MCP_TOOLS.md](./MCP-Integration/CLAUDE_CODE_A2A_BRIDGE_MCP_TOOLS.md) | Bridge Claude Code ↔ A2A |
+| [DIEGOTOOLS_INTEGRATION.md](./MCP-Integration/DIEGOTOOLS_INTEGRATION.md) | Integração Diego Tools |
+
+---
+
+### **🤖 3. Agent Systems** - Sistemas de Agentes
+📁 [`Agent-Systems/`](./Agent-Systems/) - **13 documentos**
+
+**Orchestrator, agentes especializados e sistemas autônomos**
+
+| Documento | Descrição |
+|-----------|-----------|
+| [ORCHESTRATOR_AGENT_GUIDE.md](./Agent-Systems/ORCHESTRATOR_AGENT_GUIDE.md) | Guia completo do Orchestrator |
+| [GUARDIAN-SISTEMA-COMPLETO.md](./Agent-Systems/GUARDIAN-SISTEMA-COMPLETO.md) | Sistema Guardian completo |
+| [AGENTE-ORGANIZADOR-AUTONOMO.md](./Agent-Systems/AGENTE-ORGANIZADOR-AUTONOMO.md) | Agente organizador autônomo |
+
+---
+
+### **🏗️ 4. Infrastructure** - Infraestrutura
+📁 [`Infrastructure/`](./Infrastructure/) - **11 documentos**
+
+**Docker, deployment, banco de dados e monitoramento**
+
+| Documento | Descrição |
+|-----------|-----------|
+| [A2A-POSTGRESQL-INTEGRATION.md](./Infrastructure/A2A-POSTGRESQL-INTEGRATION.md) | Integração PostgreSQL A2A |
+| [DOCKER-COMPOSE-UNIFICADO.md](./Infrastructure/DOCKER-COMPOSE-UNIFICADO.md) | Docker Compose unificado |
+| [ENHANCED-MONITOR-GUIDE.md](./Infrastructure/ENHANCED-MONITOR-GUIDE.md) | Guia de monitoramento avançado |
+
+---
+
+### **📖 5. Guides & Tutorials** - Guias e Tutoriais
+📁 [`Guides-Tutorials/`](./Guides-Tutorials/) - **16 documentos**
+
+**Documentação de uso, configuração e procedimentos**
+
+| Documento | Descrição |
+|-----------|-----------|
+| [GUIA_COMPLETO_PARA_LEIGOS.md](./Guides-Tutorials/GUIA_COMPLETO_PARA_LEIGOS.md) | Guia completo para iniciantes |
+| [CONFIGURACAO_COMPLETA.md](./Guides-Tutorials/CONFIGURACAO_COMPLETA.md) | Configuração completa do sistema |
+| [COMANDOS_RAPIDOS.md](./Guides-Tutorials/COMANDOS_RAPIDOS.md) | Comandos rápidos de uso |
+
+---
+
+### **📦 6. Legacy** - Arquivos Históricos
+📁 [`Legacy/`](./Legacy/) - **8 documentos**
+
+**Documentos de versões anteriores e otimizações concluídas**
+
+| Documento | Descrição |
+|-----------|-----------|
+| [A2A-OPTIMIZATION-FINAL-REPORT.md](./Legacy/A2A-OPTIMIZATION-FINAL-REPORT.md) | Relatório final otimização A2A |
+| [A2A-OPTIMIZATION-COMPLETE.md](./Legacy/A2A-OPTIMIZATION-COMPLETE.md) | Otimização A2A completa |
+
+---
+
+### **🛠️ 7. Support** - Documentos de Suporte
+📁 [`Support/`](./Support/) - **15 documentos**
+
+**Configurações, reports e documentos auxiliares**
+
+| Documento | Descrição |
+|-----------|-----------|
+| [CLAUDE.md](./Support/CLAUDE.md) | Configuração Claude Code |
+| [UNIVERSAL-ORGANIZATION-GUIDE.md](./Support/UNIVERSAL-ORGANIZATION-GUIDE.md) | Guia de organização universal |
 
 ## 🧭 Navegação Rápida
 
