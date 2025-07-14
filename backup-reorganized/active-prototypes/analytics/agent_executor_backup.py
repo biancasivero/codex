@@ -13,22 +13,22 @@ from a2a.utils import (
     new_text_artifact,
     new_data_artifact,
 )
-from agent import ChartGenerationAgent
+from agent import HelloWorldAgent
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-class ChartGenerationAgentExecutor(AgentExecutor):
+class HelloWorldAgentExecutor(AgentExecutor):
     """
-    Chart Generation Agent executor with complete task lifecycle management.
+    HelloWorld Agent executor with complete task lifecycle management.
     """
 
     def __init__(self):
-        self.agent = ChartGenerationAgent()
+        self.agent = HelloWorldAgent()
 
     async def execute(self, context: RequestContext, event_queue: EventQueue) -> None:
-        """Execute a Chart Generation task with complete lifecycle management."""
+        """Execute a HelloWorld task with complete lifecycle management."""
         query = context.get_user_input()
         task = context.current_task
         
@@ -44,7 +44,7 @@ class ChartGenerationAgentExecutor(AgentExecutor):
                 status=TaskStatus(
                     state=TaskState.working,
                     message=new_agent_text_message(
-                        "Processing chart generation request...",
+                        "Processing your request...",
                         task.contextId,
                         task.id,
                     ),
@@ -62,13 +62,13 @@ class ChartGenerationAgentExecutor(AgentExecutor):
             
             is_task_complete = result.get("is_task_complete", True)
             success = result.get("success", True)
-            result_text = result.get("result", "Chart generation completed")
+            result_text = result.get("result", "Hello World!")
             
             # 4. Criar artefato com resultado
             if success:
                 artifact = new_text_artifact(
-                    name="chart_generation_result",
-                    description="Chart generation intelligent response",
+                    name="hello_world_result",
+                    description="HelloWorld intelligent response",
                     text=result_text,
                 )
             else:
@@ -97,7 +97,7 @@ class ChartGenerationAgentExecutor(AgentExecutor):
                         status=TaskStatus(
                             state=TaskState.completed,
                             message=new_agent_text_message(
-                                "Chart generation completed successfully",
+                                "Task completed successfully",
                                 task.contextId,
                                 task.id,
                             ),
@@ -149,7 +149,7 @@ class ChartGenerationAgentExecutor(AgentExecutor):
             logger.error(f"Task {task.id} marked as FAILED")
 
     async def cancel(self, context: RequestContext, event_queue: EventQueue) -> None:
-        """Cancel the current task."""
+        """Cancel a running task."""
         task = context.current_task
         if task:
             await event_queue.enqueue_event(
@@ -168,7 +168,82 @@ class ChartGenerationAgentExecutor(AgentExecutor):
                 )
             )
             logger.info(f"Task {task.id} cancelled")
+        else:
+            logger.warning("No task to cancel")
 
-    async def chart_generator(self, context: RequestContext, event_queue: EventQueue) -> None:
-        """Chart generator skill endpoint."""
-        return await self.execute(context, event_queue)
+    # Método de skill único
+    async def hello_world(self, context: RequestContext, event_queue: EventQueue) -> None:
+        """Send an intelligent Hello World message."""
+        await self.execute(context, event_queue)
+
+    async def find_and_greet_agent(self, context: RequestContext, event_queue: EventQueue) -> None:
+        """Locate other agents using MCP and greet them."""
+        # Implementação MCP mantida para compatibilidade
+        from .mcp import client as mcp_client
+        from a2a.client import A2AClient
+
+        task = context.current_task
+        if not task:
+            task = new_task(context.message)
+            await event_queue.enqueue_event(task)
+
+        try:
+            # Marcar como em andamento
+            await event_queue.enqueue_event(
+                TaskStatusUpdateEvent(
+                    status=TaskStatus(state=TaskState.working),
+                    contextId=task.contextId,
+                    taskId=task.id,
+                )
+            )
+
+            # Find agents using the MCP client
+            agents = await mcp_client.find_agents("hello world")
+            if not agents:
+                result = "No agents found."
+            else:
+                results = []
+                for agent in agents:
+                    client = A2AClient(agent_card=agent)
+                    async with client.connect() as connection:
+                        response = await connection.execute_skill("hello_world")
+                        results.append(f"Agent {agent.name} responded: {response}")
+                result = "\n".join(results)
+
+            # Criar artefato e marcar como completa
+            artifact = new_text_artifact(
+                name="greet_agents_result",
+                description="Results from greeting other agents",
+                text=result,
+            )
+            
+            await event_queue.enqueue_event(
+                TaskArtifactUpdateEvent(
+                    contextId=task.contextId,
+                    taskId=task.id,
+                    artifact=artifact,
+                    lastChunk=True,
+                )
+            )
+            
+            await event_queue.enqueue_event(
+                TaskStatusUpdateEvent(
+                    status=TaskStatus(state=TaskState.completed),
+                    final=True,
+                    contextId=task.contextId,
+                    taskId=task.id,
+                )
+            )
+            
+        except Exception as e:
+            logger.exception(f"Error in find_and_greet_agent")
+            await event_queue.enqueue_event(
+                TaskStatusUpdateEvent(
+                    status=TaskStatus(state=TaskState.failed),
+                    final=True,
+                    contextId=task.contextId,
+                    taskId=task.id,
+                )
+            )
+
+

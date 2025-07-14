@@ -226,3 +226,59 @@ class ChartGenerationAgent:
             )
 
         return session_data[image_key]
+
+    async def process_request(self, query: str, session_id: str, skill: str = None) -> dict[str, Any]:
+        """Process a chart generation request following HelloWorld Agent pattern."""
+        try:
+            logger.info(f"Processing chart generation request: {query} (session: {session_id})")
+            
+            # Usar o método invoke existente
+            result = self.invoke(query, session_id)
+            
+            # Verificar se houve erro
+            if hasattr(result, 'error') and result.error:
+                return {
+                    "is_task_complete": False,
+                    "require_user_input": False,
+                    "result": f"Chart generation failed: {result.error}",
+                    "success": False
+                }
+            
+            # Verificar se o resultado é válido
+            if result and hasattr(result, 'raw'):
+                # Tentar obter os dados da imagem
+                data = self.get_image_data(session_id=session_id, image_key=result.raw)
+                
+                if data and not data.error:
+                    return {
+                        "is_task_complete": True,
+                        "require_user_input": False,
+                        "result": f"Chart generated successfully: {data.name}",
+                        "chart_id": data.id,
+                        "chart_name": data.name,
+                        "success": True
+                    }
+                else:
+                    error_msg = data.error if data else "Failed to generate chart image"
+                    return {
+                        "is_task_complete": True,  # Marca como completo mesmo com erro
+                        "require_user_input": False,
+                        "result": f"Chart generation error: {error_msg}",
+                        "success": False
+                    }
+            else:
+                return {
+                    "is_task_complete": True,  # Marca como completo mesmo com erro
+                    "require_user_input": False,
+                    "result": "Chart generation failed: Invalid result from crew",
+                    "success": False
+                }
+                
+        except Exception as e:
+            logger.exception(f"Error in chart generation for session {session_id}")
+            return {
+                "is_task_complete": True,  # Sempre completa, mesmo com erro
+                "require_user_input": False,
+                "result": f"Chart generation error: {str(e)}",
+                "success": False
+            }
